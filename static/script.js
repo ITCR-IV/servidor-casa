@@ -15,6 +15,18 @@ socket.on('connect', () => {
     console.log('Connected to server');
 });
 
+socket.on('TakePhoto', (message) => {
+  if(message == 'sucesfull'){
+    const imageSrc = '/static/Image.jpg';
+    const image = document.createElement('img');
+    image.src = imageSrc;
+    photoContainer.innerHTML = '';
+    photoContainer.appendChild(image);
+  } else{
+    alert(message);
+  }
+})
+
 socket.on('StateDOORS', (doors) => {
     doors.forEach(door => {
       if(door.value){
@@ -110,9 +122,5 @@ OnAllLights.addEventListener('click', () => {
 });
 
 takePhotoButton.addEventListener('click', () => {
-  const imageSrc = '/static/Image.jpg';
-  const image = document.createElement('img');
-  image.src = imageSrc;
-  photoContainer.innerHTML = '';
-  photoContainer.appendChild(image);
+  socket.emit('TakePhoto');
 });
