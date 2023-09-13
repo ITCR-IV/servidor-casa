@@ -3,6 +3,8 @@
 # SysVinit script para iniciar el servidor_casa
 # Asume que está instalado en el HOME de root en un directorio servidor_casa
 
+ROOT_HOME=$(getent passwd | grep root | cut -d: --fields=6)
+
 check_root() {
 	if [ "$(id -u)" != "0" ]; then
 		echo "This script must be run as root" 1>&2
@@ -21,7 +23,7 @@ start() {
 		echo "Server is already running."
 	else
 		echo "Starting server..."
-		cd "$HOME"/servidor_casa
+		cd "$ROOT_HOME"/servidor_casa
 		python3 servidor_casa.py &
 		echo "Server started."
 	fi

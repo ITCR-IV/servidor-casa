@@ -139,4 +139,4 @@ camera = None
 if __name__ == '__main__':
   camera = cv2.VideoCapture(0)  # 0 indicates the default camera (your USB camera might have a different index)
   casagpio.init_gpio()
-  socketio.run(app, host='localhost', port=5000)  # Replace with your desired host and port
+  socketio.run(app, host='localhost', port=5000, allow_unsafe_werkzeug=True)  # Replace with your desired host and port
