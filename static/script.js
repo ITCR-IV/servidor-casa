@@ -10,7 +10,7 @@ const Bedroom1Ligth = document.getElementById('Bedroom1Ligth');
 const Bedroom2Ligth = document.getElementById('Bedroom2Ligth');
 const BathLigth = document.getElementById('BathLigth');
 
-const socket = io.connect('http://localhost:5000');
+const socket = io.connect('http://192.168.1.4:5000');
 socket.on('connect', () => {
     console.log('Connected to server');
 });
