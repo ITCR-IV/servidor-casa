@@ -136,19 +136,7 @@ def handle_stateDoors():
 
 camera = None
 
-all_camera_idx_available = []
-
-for camera_idx in range(10):
-    cap = cv2.VideoCapture(camera_idx)
-    if cap.isOpened():
-        print(f'Camera index available: {camera_idx}')
-        all_camera_idx_available.append(camera_idx)
-        cap.release()
-
 if __name__ == '__main__':
-    print(all_camera_idx_available)
-    if len(all_camera_idx_available) > 0:
-        camera = cv2.VideoCapture(0)  # 0 indicates the default camera (your USB camera might have a different index)
-
-    casagpio.init_gpio()
-    socketio.run(app, host='192.168.1.4', port=5000, allow_unsafe_werkzeug=True)  # Replace with your desired host and port
+  camera = cv2.VideoCapture(0)  # 0 indicates the default camera (your USB camera might have a different index)
+  casagpio.init_gpio()
+  socketio.run(app, host='192.168.1.4', port=5000, allow_unsafe_werkzeug=True)  # Replace with your desired host and port
