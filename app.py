@@ -75,21 +75,21 @@ def handle_message(target, state):
   state = int(state)
   for pin in pines:
     if(pin['target'] == target):
-      write_pin(pin['pin'], state)
+      casagpio.write_pin(pin['pin'], state)
   
 
 @socketio.on('MultiLED')
 def handle_message(state):
   state = int(state)
   for pin in pines:
-    write_pin(pin['pin'], state)
+    casagpio.write_pin(pin['pin'], state)
 
 @socketio.on('StateDOORS')
 def handle_message():
-  MainDoorSignal = bool(read_pin(21))
-  Bedroom1DoorSignal = bool(read_pin(22))
-  Bedroom2DoorSignal = bool(read_pin(23))
-  BathDoorSignal = bool(read_pin(24))
+  MainDoorSignal = bool(casagpio.read_pin(21))
+  Bedroom1DoorSignal = bool(casagpio.read_pin(22))
+  Bedroom2DoorSignal = bool(casagpio.read_pin(23))
+  BathDoorSignal = bool(casagpio.read_pin(24))
 
   doors = [
     {
@@ -112,5 +112,5 @@ def handle_message():
   socketio.emit('StateDOORS', doors)
 
 if __name__ == '__main__':
-  init_gpio()
+  casagpio.init_gpio()
   socketio.run(app, host='localhost', port=5000)  # Replace with your desired host and port
