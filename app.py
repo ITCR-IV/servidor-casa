@@ -25,23 +25,23 @@ hashed_valid_password = bcrypt.hashpw(valid_password.encode('utf-8'), salt)
 pines = [
   {
     'target': 'LivingLightBulb',
-    'pin': 0,
+    'pin': 16,
   },
   {
     'target': 'KitchenLightBulb',
-    'pin': 1,
+    'pin': 17,
   },
   {
     'target': 'Bedroom1LigthBulb',
-    'pin': 2,
+    'pin': 18,
   },
   {
     'target': 'Bedroom2LigthBulb',
-    'pin': 3,
+    'pin': 19,
   },
   {
     'target': 'BathLigthBulb',
-    'pin': 4,
+    'pin': 20,
   },
 ]
 
@@ -86,10 +86,10 @@ def handle_message(state):
 
 @socketio.on('StateDOORS')
 def handle_message():
-  MainDoorSignal = bool(read_pin())
-  Bedroom1DoorSignal = bool(read_pin())
-  Bedroom2DoorSignal = bool(read_pin())
-  BathDoorSignal = bool(read_pin())
+  MainDoorSignal = bool(read_pin(21))
+  Bedroom1DoorSignal = bool(read_pin(22))
+  Bedroom2DoorSignal = bool(read_pin(23))
+  BathDoorSignal = bool(read_pin(24))
 
   doors = [
     {
