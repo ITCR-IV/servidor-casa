@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_socketio import SocketIO
 import bcrypt
 import casagpio
+import cv2
 
 # Algunas configuraciones para flask
 app = Flask(__name__)
@@ -71,7 +72,7 @@ def handle_connect():
   None
 
 @socketio.on('SingleLED')
-def handle_message(target, state):
+def handle_singleLed(target, state):
   state = int(state)
   for pin in pines:
     if(pin['target'] == target):
@@ -79,13 +80,35 @@ def handle_message(target, state):
   
 
 @socketio.on('MultiLED')
-def handle_message(state):
+def handle_multiLed(state):
   state = int(state)
   for pin in pines:
     write_pin(pin['pin'], state)
 
+@socketio.on('TakePhoto')
+def handle_takePhoto():
+  # Check if the camera is opened successfully
+  if not camera.isOpened():
+      socketio.emit('TakePhoto', 'error opening camera')
+      exit()
+
+  # Capture a photo
+  ret, frame = camera.read()
+  if not ret:
+      socketio.emit('TakePhoto', 'error taking photo')
+      camera.release()
+      exit()
+
+  # Save the captured photo
+  filename = "./static/Image.jpg"
+  cv2.imwrite(filename, frame)
+
+  # Release the camera
+  camera.release()
+  socketio.emit('TakePhoto', 'successful')
+
 @socketio.on('StateDOORS')
-def handle_message():
+def handle_stateDoors():
   MainDoorSignal = bool(read_pin(21))
   Bedroom1DoorSignal = bool(read_pin(22))
   Bedroom2DoorSignal = bool(read_pin(23))
@@ -111,6 +134,9 @@ def handle_message():
   ]
   socketio.emit('StateDOORS', doors)
 
+camera = None
+
 if __name__ == '__main__':
+  camera = cv2.VideoCapture(0)  # 0 indicates the default camera (your USB camera might have a different index)
   init_gpio()
   socketio.run(app, host='localhost', port=5000)  # Replace with your desired host and port
